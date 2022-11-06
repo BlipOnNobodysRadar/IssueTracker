@@ -1,6 +1,8 @@
 const form = document.querySelector("#issueInputForm");
 form.addEventListener("submit", saveIssue);
 
+fetchIssues();
+
 function fetchIssues() {
   //grab all issues from localstorage and display them in issuesList div
   const issues = JSON.parse(localStorage.getItem("issues"));
@@ -25,10 +27,22 @@ function fetchIssues() {
       "</h3>" +
       "<p>" +
       issue.description +
-      "</p>";
+      "</p>" +
+      "<p><span class=glyphicon glyphicon-time></span> " +
+      issue.severity +
+      " " +
+      "<span class=glyphicon glyphicon-user></span>" +
+      issue.assignedTo +
+      "</p>" +
+      '<a href="#" class="btn btn-warning" onclick="setStatusClosed(\'' +
+      issue.id +
+      "')\">Close</a> " +
+      '<a href="#" class="btn btn-danger" onclick="setStatusClosed(\'' +
+      issue.id +
+      "')\">Delete</a> " +
+      "</div>";
   }
 }
-fetchIssues();
 
 function saveIssue(e) {
   const issueId = chance.guid();
