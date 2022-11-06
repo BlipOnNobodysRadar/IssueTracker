@@ -14,30 +14,31 @@ function fetchIssues() {
       issue.status === "Closed" ? "label-success" : "label-info";
 
     issuesList.innerHTML +=
-      `<div class="well"` +
-      "<h6>Issue ID: " +
+      '<div class="well">' +
+      "<h6>Issue ID:" +
       issue.id +
       "</h6>" +
-      '<p><span class="label ' +
+      '<p><span class= "label ' +
       statusColor +
-      ' " </span>' +
+      ' ">' +
       issue.status +
+      "</span></p>" +
       "<h3>" +
       issue.subject +
       "</h3>" +
       "<p>" +
       issue.description +
       "</p>" +
-      "<p><span class=glyphicon glyphicon-time></span> " +
+      '<p><span class="glyphicon glyphicon-time"></span> ' +
       issue.severity +
       " " +
-      "<span class=glyphicon glyphicon-user></span>" +
+      '<span class="glyphicon glyphicon-user"></span>' +
       issue.assignedTo +
       "</p>" +
       '<a href="#" class="btn btn-warning" onclick="setStatusClosed(\'' +
       issue.id +
       "')\">Close</a> " +
-      '<a href="#" class="btn btn-danger" onclick="setStatusClosed(\'' +
+      '<a href="#" class="btn btn-danger" onclick="deleteIssue(\'' +
       issue.id +
       "')\">Delete</a> " +
       "</div>";
@@ -69,4 +70,26 @@ function saveIssue(e) {
   form.reset();
   fetchIssues();
   e.preventDefault();
+}
+
+function setStatusClosed(id) {
+  let issues = localStorage.getItem("issues");
+  for (let issue of issues) {
+    if (issue.id === id) {
+      issue.status = "Closed";
+    }
+  }
+  localStorage.setItem("issues", JSON.stringify(issues));
+  fetchIssues();
+}
+
+function deleteIssue(id) {
+  let issues = JSON.parse(localStorage.getItem("issues"));
+  for (let i = 0; i < issues.length; i++) {
+    if (issues[i].id === id) {
+      issues.splice(i, 1);
+    }
+  }
+  localStorage.setItem("issues", issues);
+  fetchIssues();
 }
